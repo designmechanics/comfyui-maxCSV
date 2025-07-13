@@ -7,7 +7,7 @@ import json
 root_dir = os.path.dirname(os.path.abspath(__file__))
 tags_path = os.path.abspath(os.path.join(root_dir, "../tags"))
 
-class EZ_Tag_Loader:
+class Max_Tag_Loader:
     @classmethod
     def INPUT_TYPES(cls):
         global tags_path
@@ -39,7 +39,7 @@ class EZ_Tag_Loader:
 
     FUNCTION = "browse_tags"
 
-    CATEGORY = "EZ NODES"
+    CATEGORY = "Max NODES"
     DESCRIPTION = """
 Loads tags from a text file based on UI selection
 Each line in the text file is considered a separate tag
@@ -145,7 +145,7 @@ def get_tags_from_file(file_path, filter_text=""):
         print(f"Error reading tags file {file_path}: {e}")
         return []
 
-@PromptServer.instance.routes.post("/ez_tag_browser/get_directory_structure")
+@PromptServer.instance.routes.post("/max_tag_browser/get_directory_structure")
 async def api_get_directory_structure(request):
     try:
         data = await request.json()
@@ -176,7 +176,7 @@ async def api_get_directory_structure(request):
     except Exception as e:
         return web.json_response({"error": str(e)}, status=500)
 
-@PromptServer.instance.routes.post("/ez_tag_browser/get_file_info")
+@PromptServer.instance.routes.post("/max_tag_browser/get_file_info")
 async def get_file_info(request):
     try:
         data = await request.json()

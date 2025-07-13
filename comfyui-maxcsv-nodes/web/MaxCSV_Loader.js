@@ -3,9 +3,9 @@ import { app } from "../../../scripts/app.js";
 // Code largely inspired by FILL NODES, credit to the author: https://github.com/filliptm/ComfyUI_Fill-Nodes
 
 app.registerExtension({
-    name: "Comfy.EZ_CSV_Loader",
+    name: "Comfy.Max_CSV_Loader",
     async nodeCreated(node) {
-        if (node.comfyClass === "EZ_CSV_Loader") {
+        if (node.comfyClass === "Max_CSV_Loader") {
             addCSVBrowserUI(node);
         }
     }
@@ -78,7 +78,7 @@ async function addCSVBrowserUI(node) {
 
     async function updateRows() {
         try {
-            const response = await fetch('/ez_csv_browser/get_directory_structure', {
+            const response = await fetch('/max_csv_browser/get_directory_structure', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ path: currentFile, filter: filterText })
@@ -106,7 +106,7 @@ async function addCSVBrowserUI(node) {
 
     async function fetchFileInfo(relativePath) {
         try {
-            const response = await fetch('/ez_csv_browser/get_file_info', {
+            const response = await fetch('/max_csv_browser/get_file_info', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ relative_path: relativePath })

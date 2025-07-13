@@ -1,0 +1,14 @@
+[project]
+name = "comfyui-ez-af-nodes"
+description = "Conveniently control parts of text prompts with custom UI. Pack includes loaders from txt and csv files, dynamic text concatenation tool and easy-to-use input node"
+version = "2.0.0"
+license = {file = "LICENSE"}
+
+[project.urls]
+Repository = "https://github.com/ez-af/ComfyUI-EZ-AF-Nodes"
+#  Used by Comfy Registry https://comfyregistry.org
+
+[tool.comfy]
+PublisherId = "ez-af"
+DisplayName = "ComfyUI-EZ-AF-Nodes"
+Icon = ""

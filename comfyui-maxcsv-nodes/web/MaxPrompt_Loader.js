@@ -3,9 +3,9 @@ import { app } from "../../../scripts/app.js";
 // Code largely inspired by FILL NODES, credit to the author: https://github.com/filliptm/ComfyUI_Fill-Nodes
 
 app.registerExtension({
-    name: "Comfy.EZ_Prompt_Loader",
+    name: "Comfy.Max_Prompt_Loader",
     async nodeCreated(node) {
-        if (node.comfyClass === "EZ_Prompt_Loader") {
+        if (node.comfyClass === "Max_Prompt_Loader") {
             addFileBrowserUI(node);
         }
     }
@@ -73,7 +73,7 @@ async function addFileBrowserUI(node) {
 
     async function updateFiles() {
         try {
-            const response = await fetch('/ez_file_browser/get_directory_structure', {
+            const response = await fetch('/max_file_browser/get_directory_structure', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ path: currentDirectory, filter: filterText })
@@ -104,7 +104,7 @@ async function addFileBrowserUI(node) {
         for (const file of files) {
             try {
                 const imageFile = file.replace('.txt', '.png');
-                const response = await fetch('/ez_file_browser/get_thumbnail', {
+                const response = await fetch('/max_file_browser/get_thumbnail', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ path: currentDirectory, file: imageFile })
@@ -121,7 +121,7 @@ async function addFileBrowserUI(node) {
 
     async function fetchFileInfo(relativePath) {
         try {
-            const response = await fetch('/ez_file_browser/get_file_info', {
+            const response = await fetch('/max_file_browser/get_file_info', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ relative_path: relativePath })

@@ -3,7 +3,7 @@ import os
 root_dir = os.path.dirname(os.path.abspath(__file__))
 prompts_path = os.path.abspath(os.path.join(root_dir, "../prompts"))
 
-class EZ_Test:
+class Max_Test:
     @classmethod
     def INPUT_TYPES(cls):
 
@@ -29,7 +29,7 @@ class EZ_Test:
 
     RETURN_TYPES = ("STRING",)
     FUNCTION = "doit"
-    CATEGORY = "EZ NODES"
+    CATEGORY = "Max NODES"
     DESCRIPTION = """
 TEST NODE 
 """

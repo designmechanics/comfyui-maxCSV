@@ -24,7 +24,7 @@ class AnyType(str):
 
 any = AnyType("*")
 
-class EZ_Input:
+class Max_Input:
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -36,14 +36,14 @@ class EZ_Input:
     RETURN_TYPES = (any, )
     RETURN_NAMES = ("any", )
     FUNCTION = "to_string"
-    CATEGORY = "EZ NODES"
+    CATEGORY = "Max NODES"
 
     def to_string(self, String):
         
         Combo = String
         return (Combo, )
 
-class EZ_Extract_Prompt:
+class Max_Extract_Prompt:
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -56,7 +56,7 @@ class EZ_Extract_Prompt:
 
     RETURN_TYPES = ("STRING",)
     FUNCTION = "extract_prompt"
-    CATEGORY = "EZ NODES"
+    CATEGORY = "Max NODES"
     DESCRIPTION = """
 Extracts full lines of text from input text based on the header provided in input
 
@@ -96,7 +96,7 @@ Use with EZ_CSV_Loader to extract text content based on header name
 
         return ("\n".join(lines_out),)
         
-class EZ_Find_Replace:
+class Max_Find_Replace:
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -111,7 +111,7 @@ class EZ_Find_Replace:
 
     RETURN_TYPES = ("STRING",)
     FUNCTION = "find_replace"
-    CATEGORY = "EZ NODES"
+    CATEGORY = "Max NODES"
     DESCRIPTION = """
 Finds and replaces all instances of text string
 """
@@ -120,7 +120,7 @@ Finds and replaces all instances of text string
         string = string.replace(find, replace)
         return (string,)
 
-class EZ_Text_Concat: # inspired by WAS-Suite by Jordan Thompson (WASasquatch) and Bjornulf nodes
+class Max_Text_Concat: # inspired by WAS-Suite by Jordan Thompson (WASasquatch) and Bjornulf nodes
 
     @classmethod
     def INPUT_TYPES(cls):
@@ -138,7 +138,7 @@ class EZ_Text_Concat: # inspired by WAS-Suite by Jordan Thompson (WASasquatch) a
 
     RETURN_TYPES = ("STRING",)
     FUNCTION = "text_concatenate"
-    CATEGORY = "EZ NODES"
+    CATEGORY = "Max NODES"
     DESCRIPTION = """
 Concatenate any number of string inputs into a single string with options to beatify text before or after concatenation
 
@@ -164,7 +164,7 @@ use single or multiple "\\n" inputs as delimiter to add line breaks
             merged_text = re.sub(r'\s+', ' ', merged_text)
         return (merged_text,)
     
-class EZ_Text_to_Size:
+class Max_Text_to_Size:
 
     @classmethod
     def INPUT_TYPES(cls):
@@ -177,7 +177,7 @@ class EZ_Text_to_Size:
     RETURN_TYPES = (any, any,)
     RETURN_NAMES = ("WIDTH", "HEIGHT",)
     FUNCTION = "extract_size"
-    CATEGORY = "EZ NODES"
+    CATEGORY = "Max NODES"
     DESCRIPTION = """
 Extract numbers from text string to be used as width and height
 """

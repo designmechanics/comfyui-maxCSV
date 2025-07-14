@@ -9,7 +9,7 @@ import random
 root_dir = os.path.dirname(os.path.abspath(__file__))
 prompts_path = os.path.abspath(os.path.join(root_dir, "../prompts"))
 
-class EZ_Prompt_Loader:
+class Max_Prompt_Loader:
     @classmethod
     def INPUT_TYPES(cls):
         global prompts_path
@@ -40,7 +40,7 @@ class EZ_Prompt_Loader:
 
     FUNCTION = "browse_files"
 
-    CATEGORY = "EZ NODES"
+    CATEGORY = "Max NODES"
     DESCRIPTION = """
 Loads prompt text from files based on UI selection
 Selection types:
@@ -166,7 +166,7 @@ def get_file_list(path, filter_text=""):
     return result
 
 
-@PromptServer.instance.routes.post("/ez_file_browser/get_directory_structure")
+@PromptServer.instance.routes.post("/max_file_browser/get_directory_structure")
 async def api_get_directory_structure(request):
     data = await request.json()
     path = data.get("path", "./")
@@ -183,7 +183,7 @@ async def api_get_directory_structure(request):
     return web.json_response({"structure": structure, "files": files})
 
 
-@PromptServer.instance.routes.post("/ez_file_browser/get_thumbnail")
+@PromptServer.instance.routes.post("/max_file_browser/get_thumbnail")
 async def api_get_thumbnail(request):
     data = await request.json()
     path = data.get("path", "./")
@@ -206,7 +206,7 @@ async def api_get_thumbnail(request):
     except Exception as e:
         return web.json_response({"error": str(e)}, status=500)
     
-@PromptServer.instance.routes.post("/ez_file_browser/get_file_info")
+@PromptServer.instance.routes.post("/max_file_browser/get_file_info")
 async def get_file_info(request):
     # global prompts_path
     # prompt_directory = os.path.join(prompts_path, prompt_directory)

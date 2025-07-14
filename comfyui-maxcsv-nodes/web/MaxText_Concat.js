@@ -3,9 +3,9 @@ import { app } from "../../../scripts/app.js";
 // logic copied from bjornulf nodes, credit to the author: https://github.com/justUmen/Bjornulf_custom_nodes
 
 app.registerExtension({
-    name: "Comfy.EZ_Text_Concat",
+    name: "Comfy.Max_Text_Concat",
     async nodeCreated(node) {
-        if (node.comfyClass === "EZ_Text_Concat") {
+        if (node.comfyClass === "Max_Text_Concat") {
             const updateInputs = () => {
                 const initialWidth = node.size[0];
                 const numInputsWidget = node.widgets.find(w => w.name === "number_of_inputs");

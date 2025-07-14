@@ -8,7 +8,7 @@ import csv
 root_dir = os.path.dirname(os.path.abspath(__file__))
 csv_path = os.path.abspath(os.path.join(root_dir, "../csv"))
 
-class EZ_CSV_Loader:
+class Max_CSV_Loader:
     @classmethod
     def INPUT_TYPES(cls):
         global csv_path
@@ -41,7 +41,7 @@ class EZ_CSV_Loader:
 
     FUNCTION = "browse_csv"
 
-    CATEGORY = "EZ NODES"
+    CATEGORY = "Max NODES"
     DESCRIPTION = """
 Loads rows from a CSV file based on UI selection
 Each row in the CSV is selectable; the first row is used as headers
@@ -146,7 +146,7 @@ Selection types:
                 if filename_col_idx < len(first_row):
                     filename_output = first_row[filename_col_idx]
         except Exception as e:
-            print(f"EZ_CSV_Loader: Could not extract filename. Error: {e}")
+            print(f"MaxCSV_Loader: Could not extract filename. Error: {e}")
             filename_output = ""
 
         prompt_output = ""
@@ -159,7 +159,7 @@ Selection types:
                 if prompt_col_idx < len(first_row):
                     prompt_output = first_row[prompt_col_idx]
         except Exception as e:
-            print(f"EZ_CSV_Loader: Could not extract prompt. Error: {e}")
+            print(f"MaxCSV_Loader: Could not extract prompt. Error: {e}")
             prompt_output = ""
 
         if selection_type == "iterate" or selection_type == "single":
@@ -229,7 +229,7 @@ def get_rows_from_csv(file_path, filter_text=""):
         print(f"Error reading CSV file {file_path}: {e}")
         return {"headers": [], "rows": []}
 
-@PromptServer.instance.routes.post("/ez_csv_browser/get_directory_structure")
+@PromptServer.instance.routes.post("/max_csv_browser/get_directory_structure")
 async def api_get_directory_structure(request):
     try:
         data = await request.json()
@@ -259,7 +259,7 @@ async def api_get_directory_structure(request):
     except Exception as e:
         return web.json_response({"error": str(e)}, status=500)
 
-@PromptServer.instance.routes.post("/ez_csv_browser/get_file_info")
+@PromptServer.instance.routes.post("/max_csv_browser/get_file_info")
 async def get_file_info(request):
     try:
         data = await request.json()

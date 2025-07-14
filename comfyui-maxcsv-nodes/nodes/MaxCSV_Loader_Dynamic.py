@@ -9,8 +9,8 @@ root_dir = os.path.dirname(os.path.abspath(__file__))
 csv_path = os.path.abspath(os.path.join(root_dir, "../csv"))
 
 class Max_CSV_Loader_Dynamic:
-    RETURN_TYPES = ("STRING", "STRING", "STRING", "STRING", "STRING", "STRING", "STRING", "STRING", "INT")
-    RETURN_NAMES = ("output_1", "output_2", "output_3", "output_4", "output_5", "output_6", "output_7", "output_8", "TOTAL_ROWS")
+    RETURN_TYPES = ("STRING", "STRING", "STRING", "STRING", "STRING", "STRING", "STRING", "STRING", "INT", "STRING")
+    RETURN_NAMES = ("output_1", "output_2", "output_3", "output_4", "output_5", "output_6", "output_7", "output_8", "TOTAL_ROWS", "PROMPT")
 
     def __init__(self):
         self.selected_csv = None
@@ -60,7 +60,7 @@ class Max_CSV_Loader_Dynamic:
         csv_file_path = os.path.abspath(csv_file_path)
 
         if not os.path.isfile(csv_file_path):
-            return ("", "", "", "", "", "", "", "", 0)
+            return ("", "", "", "", "", "", "", "", 0, "")
 
         try:
             with open(csv_file_path, "r", encoding="utf-8-sig") as f:
@@ -72,13 +72,13 @@ class Max_CSV_Loader_Dynamic:
                     dialect = csv.excel
                 reader = list(csv.reader(f, dialect))
                 if not reader or len(reader) < 2:
-                    return ("", "", "", "", "", "", "", "", 0)
+                    return ("", "", "", "", "", "", "", "", 0, "")
                 headers = [h.strip() for h in reader[0]]
                 rows = reader[1:]
 
                 rows = [row for row in rows if any(cell and cell.strip() for cell in row)]
         except Exception as e:
-             return ("", "", "", "", "", "", "", "", 0)
+             return ("", "", "", "", "", "", "", "", 0, "")
 
         if filter_text:
             rows = [row for row in rows if any(filter_text.lower() in str(cell).lower() for cell in row)]
@@ -86,7 +86,7 @@ class Max_CSV_Loader_Dynamic:
         total_rows = len(rows)
 
         if not rows:
-            return ("", "", "", "", "", "", "", "", total_rows)
+            return ("", "", "", "", "", "", "", "", total_rows, "")
 
         selected_indices = []
         if selection_type == "random":
@@ -127,12 +127,27 @@ class Max_CSV_Loader_Dynamic:
             row_dict = {header: (row[i] if i < len(row) else "") for i, header in enumerate(headers)}
 
             # Extract values for each output name in RETURN_NAMES
-            output_row = [row_dict.get(name, "") for name in self.RETURN_NAMES[:-1]]
+            output_row = [row_dict.get(name.split(" ")[0], "") for name in self.RETURN_NAMES[:-2]]
             outputs.append(output_row)
 
         # For simplicity, we'll just use the first selected row for output
         final_outputs = outputs[0] if outputs else [""] * 8
         final_outputs.append(total_rows)
+
+        prompt_output = ""
+        try:
+            lower_headers = [h.lower() for h in headers]
+            if 'prompt' in lower_headers:
+                prompt_col_idx = lower_headers.index('prompt')
+                first_selected_idx = selected_indices[0]
+                first_row = rows[first_selected_idx]
+                if prompt_col_idx < len(first_row):
+                    prompt_output = first_row[prompt_col_idx]
+        except Exception as e:
+            print(f"MaxCSV_Loader: Could not extract prompt. Error: {e}")
+            prompt_output = ""
+        final_outputs.append(prompt_output)
+
 
         # Update RETURN_NAMES to include the header names
         new_return_names = []
@@ -144,6 +159,7 @@ class Max_CSV_Loader_Dynamic:
             new_return_names.append(f"output_{i+1}")
 
         new_return_names.append("TOTAL_ROWS")
+        new_return_names.append("PROMPT")
         self.RETURN_NAMES = tuple(new_return_names)
 
         return tuple(final_outputs)

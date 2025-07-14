@@ -9,8 +9,8 @@ root_dir = os.path.dirname(os.path.abspath(__file__))
 csv_path = os.path.abspath(os.path.join(root_dir, "../csv"))
 
 class Max_CSV_Loader_Dynamic:
-    RETURN_TYPES = ()
-    RETURN_NAMES = ()
+    RETURN_TYPES = ("STRING", "STRING", "STRING", "STRING", "STRING", "STRING", "STRING", "STRING", "INT")
+    RETURN_NAMES = ("output_1", "output_2", "output_3", "output_4", "output_5", "output_6", "output_7", "output_8", "TOTAL_ROWS")
 
     def __init__(self):
         self.selected_csv = None
@@ -42,22 +42,7 @@ class Max_CSV_Loader_Dynamic:
         }
 
     @classmethod
-    def get_output_info(cls, csv_file):
-        global csv_path
-        csv_file_path = os.path.join(csv_path, csv_file)
-        if not os.path.isfile(csv_file_path):
-            return (), ()
-
-        with open(csv_file_path, "r", encoding="utf-8-sig") as f:
-            reader = csv.reader(f)
-            headers = [h.strip() for h in next(reader)]
-
-        cls.RETURN_TYPES = tuple(["STRING"] * len(headers))
-        cls.RETURN_NAMES = tuple(headers)
-
-    @classmethod
     def IS_CHANGED(cls, selection_type, csv_file, selected_row="", filter_text="", iteration_index=0):
-        cls.get_output_info(csv_file)
         if selection_type == "random" or selection_type == "iterate":
             return float('nan')
 
@@ -66,10 +51,6 @@ class Max_CSV_Loader_Dynamic:
         return f"{csv_file}:{selection_type}:{selected_row}:{filter_text}:{iteration_index}"
 
     def browse_csv(self, csv_file, selection_type="single", selected_row="", filter_text="", iteration_index=0, extra_pnginfo=None):
-        if self.selected_csv != csv_file:
-            self.get_output_info(csv_file)
-            self.selected_csv = csv_file
-
         # Gracefully handle the case where the optional input is not connected
         if iteration_index is None:
             iteration_index = 0
@@ -79,7 +60,7 @@ class Max_CSV_Loader_Dynamic:
         csv_file_path = os.path.abspath(csv_file_path)
 
         if not os.path.isfile(csv_file_path):
-            return tuple(["No CSV file found"] * len(self.RETURN_TYPES))
+            return ("", "", "", "", "", "", "", "", 0)
 
         try:
             with open(csv_file_path, "r", encoding="utf-8-sig") as f:
@@ -91,19 +72,21 @@ class Max_CSV_Loader_Dynamic:
                     dialect = csv.excel
                 reader = list(csv.reader(f, dialect))
                 if not reader or len(reader) < 2:
-                    return tuple(["No data rows found in file"] * len(self.RETURN_TYPES))
+                    return ("", "", "", "", "", "", "", "", 0)
                 headers = [h.strip() for h in reader[0]]
                 rows = reader[1:]
 
                 rows = [row for row in rows if any(cell and cell.strip() for cell in row)]
         except Exception as e:
-             return tuple([f"Error reading CSV: {e}"] * len(self.RETURN_TYPES))
+             return ("", "", "", "", "", "", "", "", 0)
 
         if filter_text:
             rows = [row for row in rows if any(filter_text.lower() in str(cell).lower() for cell in row)]
 
+        total_rows = len(rows)
+
         if not rows:
-            return tuple(["No matching rows found"] * len(self.RETURN_TYPES))
+            return ("", "", "", "", "", "", "", "", total_rows)
 
         selected_indices = []
         if selection_type == "random":
@@ -144,11 +127,24 @@ class Max_CSV_Loader_Dynamic:
             row_dict = {header: (row[i] if i < len(row) else "") for i, header in enumerate(headers)}
 
             # Extract values for each output name in RETURN_NAMES
-            output_row = [row_dict.get(name, "") for name in self.RETURN_NAMES]
+            output_row = [row_dict.get(name, "") for name in self.RETURN_NAMES[:-1]]
             outputs.append(output_row)
 
         # For simplicity, we'll just use the first selected row for output
-        final_outputs = outputs[0] if outputs else [""] * len(self.RETURN_NAMES)
+        final_outputs = outputs[0] if outputs else [""] * 8
+        final_outputs.append(total_rows)
+
+        # Update RETURN_NAMES to include the header names
+        new_return_names = []
+        for i, header in enumerate(headers):
+            new_return_names.append(f"output_{i+1} ({header})")
+
+        # Add the remaining output names
+        for i in range(len(headers), 8):
+            new_return_names.append(f"output_{i+1}")
+
+        new_return_names.append("TOTAL_ROWS")
+        self.RETURN_NAMES = tuple(new_return_names)
 
         return tuple(final_outputs)
 

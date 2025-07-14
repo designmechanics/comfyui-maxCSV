@@ -2,6 +2,7 @@ from .nodes.MaxTesting import Max_Test # TESTING
 
 from .nodes.MaxPrompt_Loader import Max_Prompt_Loader
 from .nodes.MaxCSV_Loader import Max_CSV_Loader
+from .nodes.MaxCSV_Loader_Dynamic import Max_CSV_Loader_Dynamic
 from .nodes.MaxTag_Loader import Max_Tag_Loader
 from .nodes.MaxText_Utils import \
     Max_Extract_Prompt, \
@@ -17,6 +18,7 @@ NODE_CLASS_MAPPINGS = {
 
     "Max_Prompt_Loader": Max_Prompt_Loader,
     "Max_CSV_Loader": Max_CSV_Loader,
+    "Max_CSV_Loader_Dynamic": Max_CSV_Loader_Dynamic,
     "Max_Tag_Loader": Max_Tag_Loader,
     "Max_Extract_Prompt": Max_Extract_Prompt,
     "Max_Find_Replace": Max_Find_Replace,
@@ -30,6 +32,7 @@ NODE_DISPLAY_NAME_MAPPINGS = {
 
     "Max_Prompt_Loader": "Max Prompt Loader",
     "Max_CSV_Loader": "Max CSV Loader",
+    "Max_CSV_Loader_Dynamic": "Max CSV Loader (Dynamic)",
     "Max_Tag_Loader": "Max Tag Loader",
     "Max_Extract_Prompt": "Max Extract Prompt",
     "Max_Find_Replace": "Max Find & Replace",

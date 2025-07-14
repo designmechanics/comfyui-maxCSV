@@ -81,15 +81,6 @@ Selection types:
 - random: Randomly select one row on each prompt queue
 - iterate: Select a single row by its index number. Increments for each item in a batch.
 """
-    DESCRIPTION = """
-Loads rows from a CSV file based on UI selection
-Each row in the CSV is selectable; the first row is used as headers
-Selection types:
-- single: Select one row at a time
-- multiple: Select multiple rows (comma-separated indices)
-- random: Randomly select one row on each prompt queue
-- iterate: Select a single row by its index number. Increments for each item in a batch.
-"""
 
     def browse_csv(self, csv_file, selection_type="single", selected_row="", filter_text="", iteration_index=0, extra_pnginfo=None):
         if self.selected_csv != csv_file:

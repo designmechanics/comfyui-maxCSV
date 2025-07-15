@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Max CSV Loader</title>
+<style>
+  body {
+    font-family: sans-serif;
+  }
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  li {
+    padding: 5px;
+    cursor: pointer;
+  }
+  li:hover {
+    background-color: #eee;
+  }
+</style>
+</head>
+<body>
+<h1>Max CSV Loader</h1>
+<ul id="csv-rows"></ul>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const csv_file = params.get('csv_file');
+  const selected_row = params.get('selected_row');
+
+  function selectRow(index) {
+    const event = new CustomEvent('rowSelected', { detail: { index: index } });
+    window.parent.document.dispatchEvent(event);
+  }
+
+  fetch(`/max_csv_browser/get_rows?csv_file=${csv_file}`)
+    .then(response => response.json())
+    .then(data => {
+      const ul = document.getElementById('csv-rows');
+      data.rows.forEach((row, index) => {
+        const li = document.createElement('li');
+        li.innerText = row.join(', ');
+        li.onclick = () => selectRow(index);
+        ul.appendChild(li);
+      });
+    });
+</script>
+</body>
+</html>
